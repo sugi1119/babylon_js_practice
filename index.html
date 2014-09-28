@@ -1,0 +1,66 @@
+<html>
+   <head>
+      <title>My first Babylon.js app</title>
+      <script src= "babylon.1.13.js"></script>
+      <script src=" hand-1.3.8.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css">
+   </head>
+   <body>
+      <canvas id="canvas"></canvas>
+      <script>
+      if (BABYLON.Engine.isSupported()) {
+
+                    var canvas = document.getElementById("canvas");
+                    var engine = new BABYLON.Engine(canvas, true);
+
+                    var scene = new BABYLON.Scene(engine);
+                    var camera = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI / 2, 13, BABYLON.Vector3.Zero (), scene);
+                    camera.attachControl(canvas, false);
+
+                    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+                    //creation of knot (name of knot, radius, tube, raidalSegments,  tubularSegments, p, q, scene, updatable)
+                    var knot = BABYLON.Mesh.CreateTorusKnot("knot", 2, 0.5, 128, 64, 2, 5, scene);
+
+                    //Creation of a box
+                    //(name of the box, size, scene)
+                    // var box = BABYLON.Mesh.CreateBox("box", 6.0, scene);
+
+                    var sphere = BABYLON.Mesh.CreateSphere("sphere", 10, 6, scene);
+
+
+                    var material = new BABYLON.StandardMaterial("mat", scene);
+                    knot.material = material;
+                    material.diffuseColor = new BABYLON.Color3(1.5, 0, 3);
+
+                    var materialsphere = new BABYLON.StandardMaterial("texture", scene);
+                    sphere.material = materialsphere;
+                    materialsphere.diffuseColor = new BABYLON.Color3(1.0, 2, 0.7);
+
+
+
+                    var renderLoop = function () {
+                    scene.render();
+                    };
+                    engine.runRenderLoop(renderLoop);
+
+                    var alpha = 0;
+                    knot.scaling.y = 1.5;
+                    sphere.scaling.y = 1;
+
+
+                    scene.beforeRender = function(){
+                    knot.rotation.y = alpha;
+                    sphere.rotation.x = alpha+1;
+
+                    alpha += 0.03;
+
+                    knot.position.y = -1;
+                    sphere.position = new BABYLON.Vector3(-10, 0, 10); // Using a vector
+
+                    };
+         }
+      </script>
+
+   </body>
+</html>
